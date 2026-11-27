@@ -89,6 +89,29 @@ const run = async () => {
       }
     });
 
+    app.get("/api/featuredPerfume", async (req, res) => {
+      try {
+        const result = await perfumeCollections
+          .find({})
+          .sort({ createdAt: -1 })
+          .limit(4)
+          .toArray();
+
+        res.status(200).send({
+          success: true,
+          message: "Perfumes fetched successfully!",
+          perfumes: result,
+        });
+      } catch (error) {
+        console.error("Error fetching perfumes:", error);
+
+        res.status(500).send({
+          success: false,
+          message: "Failed to fetch perfumes.",
+        });
+      }
+    });
+
     app.post("/api/perfume", async (req, res) => {
       try {
         const {
